@@ -1,0 +1,1098 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SmartBozo Labs / An independent AI lab</title>
+<meta name="description" content="SmartBozo Labs is an independent lab building with AI. We explore, experiment, and ship products for business and consumers.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght,SOFT@0,9..144,300..900,0..100;1,9..144,300..900,0..100&family=Newsreader:ital,opsz,wght@0,6..72,200..800;1,6..72,200..800&family=JetBrains+Mono:ital,wght@0,300..800;1,300..800&display=swap" rel="stylesheet">
+<style>
+:root {
+  --paper: #f4ede0;
+  --paper-deep: #ece2cf;
+  --ink: #14110f;
+  --ink-soft: #3a342d;
+  --ink-fade: #6b6258;
+  --vermillion: #c8341d;
+  --vermillion-deep: #9c2614;
+  --ochre: #a07a2c;
+  --moss: #4a6b3a;
+  --indigo: #2c4870;
+  --rule: #c9bfae;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--paper);
+  color: var(--ink);
+  font-family: 'Newsreader', Georgia, serif;
+  font-weight: 400;
+  font-size: 18px;
+  line-height: 1.55;
+  overflow-x: hidden;
+  position: relative;
+}
+
+/* Paper grain texture */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 1;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0.08 0 0 0 0 0.07 0 0 0 0 0.06 0 0 0 0.18 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)' opacity='0.55'/></svg>");
+  mix-blend-mode: multiply;
+  opacity: 0.5;
+}
+
+/* Subtle graph paper grid */
+body::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  background-image:
+    linear-gradient(to right, rgba(20,17,15,0.035) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(20,17,15,0.035) 1px, transparent 1px);
+  background-size: 40px 40px;
+}
+
+main, header, footer { position: relative; z-index: 2; }
+
+a { color: inherit; text-decoration: none; }
+
+/* ===== TICKER ===== */
+.ticker {
+  border-bottom: 1px solid var(--ink);
+  background: var(--ink);
+  color: var(--paper);
+  overflow: hidden;
+  position: relative;
+}
+.ticker-track {
+  display: flex;
+  gap: 3rem;
+  padding: 0.55rem 0;
+  white-space: nowrap;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.72rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  animation: scroll 50s linear infinite;
+  width: max-content;
+}
+.ticker-track span { display: inline-flex; align-items: center; gap: 0.6rem; }
+.ticker-track .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--vermillion); display: inline-block; }
+.ticker-track .dot-live { background: #4ad17a; animation: pulse 1.6s infinite; }
+@keyframes scroll {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.3; }
+}
+
+/* ===== NAV ===== */
+nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  padding: 1.4rem 3rem;
+  border-bottom: 1px solid var(--rule);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.78rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+.brand-mark {
+  font-family: 'Fraunces', serif;
+  font-weight: 600;
+  font-size: 1.2rem;
+  letter-spacing: -0.01em;
+  text-transform: none;
+  font-variation-settings: "SOFT" 30, "opsz" 144;
+}
+.brand-mark em {
+  font-style: italic;
+  color: var(--vermillion);
+  font-weight: 500;
+}
+nav ul { display: flex; gap: 2rem; list-style: none; }
+nav ul a { transition: color 0.2s; position: relative; }
+nav ul a:hover { color: var(--vermillion); }
+nav ul a::after {
+  content: '';
+  position: absolute;
+  bottom: -4px; left: 0; right: 0;
+  height: 1px;
+  background: var(--vermillion);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.3s;
+}
+nav ul a:hover::after { transform: scaleX(1); }
+
+/* ===== HERO ===== */
+.hero {
+  padding: 6rem 3rem 5rem;
+  position: relative;
+  border-bottom: 1px solid var(--rule);
+}
+.hero-meta {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.72rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--ink-fade);
+  margin-bottom: 2rem;
+  display: flex;
+  gap: 2rem;
+  flex-wrap: wrap;
+}
+.hero-meta span::before {
+  content: '◆';
+  margin-right: 0.5rem;
+  color: var(--vermillion);
+}
+h1.wordmark {
+  font-family: 'Fraunces', serif;
+  font-size: clamp(3.5rem, 11vw, 9.5rem);
+  line-height: 0.92;
+  letter-spacing: -0.04em;
+  font-weight: 400;
+  font-variation-settings: "SOFT" 50, "opsz" 144;
+  margin-bottom: 1.5rem;
+}
+h1.wordmark .smart {
+  display: block;
+  font-style: italic;
+  font-weight: 300;
+  font-variation-settings: "SOFT" 80, "opsz" 144;
+}
+h1.wordmark .bozo {
+  font-weight: 700;
+  display: inline-block;
+  font-variation-settings: "SOFT" 30, "opsz" 144;
+}
+h1.wordmark .labs {
+  display: inline-block;
+  color: var(--vermillion);
+  font-style: italic;
+  font-weight: 400;
+  position: relative;
+}
+h1.wordmark .labs::after {
+  content: '';
+  position: absolute;
+  right: -0.3em;
+  top: 0.1em;
+  width: 0.18em;
+  height: 0.18em;
+  background: var(--vermillion);
+  border-radius: 50%;
+}
+.hero-tag {
+  font-family: 'Fraunces', serif;
+  font-style: italic;
+  font-size: clamp(1.3rem, 2.4vw, 1.9rem);
+  font-weight: 300;
+  color: var(--ink-soft);
+  max-width: 36ch;
+  line-height: 1.35;
+  margin-top: 2rem;
+  margin-bottom: 3rem;
+}
+.hero-intro {
+  max-width: 58ch;
+  font-size: 1.15rem;
+  line-height: 1.65;
+  color: var(--ink-soft);
+  font-family: 'Newsreader', serif;
+  font-weight: 400;
+}
+.hero-intro strong { color: var(--ink); font-weight: 600; }
+
+.hero-cursor {
+  display: inline-block;
+  width: 0.5em;
+  height: 1em;
+  background: var(--vermillion);
+  vertical-align: -0.1em;
+  margin-left: 0.1em;
+  animation: blink 1s step-end infinite;
+}
+@keyframes blink { 50% { opacity: 0; } }
+
+/* Floating marginalia */
+.marginalia {
+  position: absolute;
+  font-family: 'Fraunces', serif;
+  font-style: italic;
+  font-size: 0.95rem;
+  color: var(--vermillion);
+  font-weight: 400;
+  max-width: 14ch;
+  line-height: 1.3;
+}
+.marginalia::before {
+  content: '↳ ';
+  font-style: normal;
+}
+.marginalia.right { right: 3rem; top: 8rem; transform: rotate(2deg); }
+.marginalia.r2 { right: 4rem; bottom: 5rem; transform: rotate(-3deg); }
+
+/* ===== PHILOSOPHY ===== */
+.philosophy {
+  padding: 6rem 3rem;
+  border-bottom: 1px solid var(--rule);
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  gap: 4rem;
+}
+.section-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.72rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--vermillion);
+  font-weight: 600;
+}
+.philosophy-pillars {
+  display: grid;
+  gap: 3rem;
+}
+.pillar {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 2rem;
+  align-items: baseline;
+  border-top: 1px solid var(--rule);
+  padding-top: 2rem;
+}
+.pillar:first-child { border-top: none; padding-top: 0; }
+.pillar-num {
+  font-family: 'Fraunces', serif;
+  font-size: 3rem;
+  font-style: italic;
+  font-weight: 300;
+  color: var(--vermillion);
+  font-variation-settings: "SOFT" 80;
+  line-height: 1;
+}
+.pillar h3 {
+  font-family: 'Fraunces', serif;
+  font-size: 2rem;
+  font-weight: 500;
+  line-height: 1.1;
+  margin-bottom: 0.6rem;
+  letter-spacing: -0.02em;
+  font-variation-settings: "SOFT" 50;
+}
+.pillar p {
+  color: var(--ink-soft);
+  font-size: 1.05rem;
+  max-width: 50ch;
+}
+
+/* ===== INDEX (Products) ===== */
+.lab-index {
+  padding: 6rem 3rem;
+  border-bottom: 1px solid var(--rule);
+}
+.index-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  margin-bottom: 4rem;
+  flex-wrap: wrap;
+  gap: 2rem;
+}
+.index-header h2 {
+  font-family: 'Fraunces', serif;
+  font-size: clamp(2.5rem, 5vw, 4.5rem);
+  font-weight: 400;
+  line-height: 1;
+  letter-spacing: -0.03em;
+  max-width: 18ch;
+  font-variation-settings: "SOFT" 50, "opsz" 144;
+}
+.index-header h2 em {
+  color: var(--vermillion);
+  font-weight: 500;
+}
+.index-count {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.85rem;
+  letter-spacing: 0.1em;
+  color: var(--ink-fade);
+  text-align: right;
+}
+.index-count strong { display: block; font-size: 2.5rem; color: var(--ink); font-weight: 400; line-height: 1; margin-bottom: 0.3rem; font-family: 'Fraunces', serif; font-style: italic; }
+
+.specimen-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0;
+  border-top: 2px solid var(--ink);
+  border-bottom: 2px solid var(--ink);
+}
+.specimen {
+  padding: 2.5rem 2.5rem 2.5rem 0;
+  border-bottom: 1px solid var(--rule);
+  border-right: 1px solid var(--rule);
+  position: relative;
+  transition: background 0.3s;
+  cursor: default;
+}
+.specimen:nth-child(2n) { border-right: none; padding-right: 0; padding-left: 2.5rem; }
+.specimen:nth-last-child(-n+2) { border-bottom: none; }
+.specimen:hover { background: var(--paper-deep); }
+
+.specimen-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 1.2rem;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.7rem;
+  letter-spacing: 0.12em;
+  color: var(--ink-fade);
+}
+.specimen-num { font-weight: 600; }
+.stamp {
+  display: inline-block;
+  padding: 0.3rem 0.7rem;
+  border: 1.5px solid currentColor;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  transform: rotate(-2deg);
+  font-size: 0.65rem;
+  position: relative;
+}
+.stamp::before {
+  content: '';
+  position: absolute;
+  inset: -2px;
+  border: 1.5px solid currentColor;
+  opacity: 0.35;
+  transform: translate(2px, 2px);
+}
+.stamp.live { color: var(--moss); }
+.stamp.building { color: var(--vermillion); }
+.stamp.planned { color: var(--indigo); }
+.stamp.concept { color: var(--ochre); }
+.stamp.exploring { color: var(--ink-soft); }
+
+.specimen h3 {
+  font-family: 'Fraunces', serif;
+  font-size: 2.2rem;
+  font-weight: 500;
+  line-height: 1.05;
+  margin-bottom: 0.5rem;
+  letter-spacing: -0.02em;
+  font-variation-settings: "SOFT" 40, "opsz" 144;
+}
+.specimen .tagline {
+  font-family: 'Fraunces', serif;
+  font-style: italic;
+  font-size: 1.05rem;
+  color: var(--vermillion);
+  margin-bottom: 1.2rem;
+  font-weight: 400;
+}
+.specimen p.desc {
+  color: var(--ink-soft);
+  font-size: 1rem;
+  line-height: 1.55;
+  margin-bottom: 1.5rem;
+  max-width: 50ch;
+}
+.specimen-meta {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  margin-bottom: 1.2rem;
+}
+.chip {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.68rem;
+  letter-spacing: 0.05em;
+  padding: 0.25rem 0.6rem;
+  background: rgba(20,17,15,0.06);
+  border-radius: 2px;
+  color: var(--ink-soft);
+}
+.specimen-link {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.75rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--ink);
+  border-bottom: 1px solid var(--ink);
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding-bottom: 1px;
+  transition: all 0.2s;
+}
+.specimen-link:hover { color: var(--vermillion); border-color: var(--vermillion); gap: 0.8rem; }
+.specimen-link.disabled { color: var(--ink-fade); border-color: transparent; cursor: not-allowed; }
+
+/* ===== NOTES (Writing) ===== */
+.notes {
+  padding: 6rem 3rem;
+  border-bottom: 1px solid var(--rule);
+  background: var(--paper-deep);
+  position: relative;
+}
+.notes-header { margin-bottom: 3rem; }
+.notes h2 {
+  font-family: 'Fraunces', serif;
+  font-size: clamp(2.5rem, 5vw, 4.5rem);
+  font-weight: 400;
+  line-height: 1;
+  letter-spacing: -0.03em;
+  margin-top: 0.6rem;
+  font-variation-settings: "SOFT" 50, "opsz" 144;
+}
+.notes h2 em { color: var(--vermillion); font-weight: 500; }
+.notes-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2rem;
+}
+.note-card {
+  border: 1.5px solid var(--ink);
+  padding: 2rem;
+  background: var(--paper);
+  transition: transform 0.25s, box-shadow 0.25s;
+  display: block;
+}
+.note-card:hover {
+  transform: translate(-4px, -4px);
+  box-shadow: 4px 4px 0 var(--ink);
+}
+.note-card .platform {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.7rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--vermillion);
+  margin-bottom: 1rem;
+}
+.note-card h4 {
+  font-family: 'Fraunces', serif;
+  font-size: 1.6rem;
+  font-weight: 500;
+  line-height: 1.15;
+  margin-bottom: 0.8rem;
+  letter-spacing: -0.01em;
+}
+.note-card p {
+  color: var(--ink-soft);
+  font-size: 0.95rem;
+  line-height: 1.5;
+  margin-bottom: 1.2rem;
+}
+.note-card .arrow {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.75rem;
+  letter-spacing: 0.1em;
+}
+
+/* ===== BUILDER ===== */
+.builder {
+  padding: 6rem 3rem;
+  border-bottom: 1px solid var(--rule);
+  display: grid;
+  grid-template-columns: 1fr 1.4fr;
+  gap: 5rem;
+  align-items: start;
+}
+.builder-portrait {
+  border: 2px solid var(--ink);
+  aspect-ratio: 3 / 4;
+  position: relative;
+  background: var(--paper-deep);
+  overflow: hidden;
+}
+.builder-portrait::before {
+  content: 'OJ';
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Fraunces', serif;
+  font-style: italic;
+  font-size: 12rem;
+  font-weight: 300;
+  color: var(--ink);
+  font-variation-settings: "SOFT" 100;
+  opacity: 0.92;
+}
+.builder-portrait::after {
+  content: '';
+  position: absolute;
+  inset: 12px;
+  border: 1px solid var(--ink);
+  opacity: 0.4;
+  pointer-events: none;
+}
+.portrait-tag {
+  position: absolute;
+  bottom: 1rem;
+  left: 1rem;
+  right: 1rem;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.68rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--ink);
+  display: flex;
+  justify-content: space-between;
+  background: var(--paper);
+  padding: 0.5rem 0.8rem;
+  border: 1px solid var(--ink);
+  z-index: 2;
+}
+
+.builder-content h2 {
+  font-family: 'Fraunces', serif;
+  font-size: clamp(2.2rem, 4.5vw, 3.8rem);
+  font-weight: 400;
+  line-height: 1.05;
+  letter-spacing: -0.025em;
+  margin-bottom: 2rem;
+  font-variation-settings: "SOFT" 50;
+}
+.builder-content h2 em { color: var(--vermillion); font-style: italic; font-weight: 500; }
+.builder-content p {
+  color: var(--ink-soft);
+  font-size: 1.1rem;
+  line-height: 1.6;
+  margin-bottom: 1.4rem;
+  max-width: 56ch;
+}
+.builder-content p strong { color: var(--ink); font-weight: 600; }
+.builder-stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2rem;
+  margin-top: 2.5rem;
+  padding-top: 2.5rem;
+  border-top: 1px solid var(--rule);
+}
+.stat .num {
+  font-family: 'Fraunces', serif;
+  font-size: 3.5rem;
+  font-weight: 400;
+  font-style: italic;
+  color: var(--vermillion);
+  line-height: 1;
+  font-variation-settings: "SOFT" 80;
+}
+.stat .label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.7rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+  margin-top: 0.5rem;
+}
+
+/* ===== CONTACT / FOOTER ===== */
+.contact {
+  padding: 6rem 3rem 4rem;
+  background: var(--ink);
+  color: var(--paper);
+  position: relative;
+  overflow: hidden;
+}
+.contact::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(to right, rgba(244,237,224,0.04) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(244,237,224,0.04) 1px, transparent 1px);
+  background-size: 40px 40px;
+  pointer-events: none;
+}
+.contact-inner { position: relative; z-index: 1; }
+.contact h2 {
+  font-family: 'Fraunces', serif;
+  font-size: clamp(3rem, 8vw, 7rem);
+  font-weight: 400;
+  line-height: 0.95;
+  letter-spacing: -0.04em;
+  margin-bottom: 1.5rem;
+  max-width: 14ch;
+  font-variation-settings: "SOFT" 50, "opsz" 144;
+}
+.contact h2 em {
+  color: #f4a83a;
+  font-style: italic;
+  font-weight: 500;
+}
+.contact-tag {
+  font-family: 'Fraunces', serif;
+  font-style: italic;
+  font-size: 1.4rem;
+  color: rgba(244,237,224,0.7);
+  margin-bottom: 4rem;
+  max-width: 40ch;
+  line-height: 1.4;
+}
+
+.contact-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 2rem;
+  border-top: 1px solid rgba(244,237,224,0.15);
+  padding-top: 3rem;
+}
+.contact-block .label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.7rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: rgba(244,237,224,0.5);
+  margin-bottom: 0.8rem;
+}
+.contact-block a, .contact-block .value {
+  font-family: 'Fraunces', serif;
+  font-size: 1.15rem;
+  display: block;
+  line-height: 1.4;
+  transition: color 0.2s;
+}
+.contact-block a:hover { color: #f4a83a; }
+
+.cta-row {
+  display: flex;
+  gap: 1rem;
+  margin-top: 2rem;
+  flex-wrap: wrap;
+}
+.btn {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.78rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  padding: 1rem 1.8rem;
+  border: 1.5px solid var(--paper);
+  display: inline-flex;
+  align-items: center;
+  gap: 0.7rem;
+  transition: all 0.2s;
+  cursor: pointer;
+  background: transparent;
+  color: var(--paper);
+}
+.btn:hover { background: var(--paper); color: var(--ink); }
+.btn.primary { background: #f4a83a; color: var(--ink); border-color: #f4a83a; }
+.btn.primary:hover { background: var(--paper); border-color: var(--paper); }
+
+footer.colophon {
+  margin-top: 5rem;
+  padding-top: 2rem;
+  border-top: 1px solid rgba(244,237,224,0.15);
+  display: flex;
+  justify-content: space-between;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.72rem;
+  letter-spacing: 0.1em;
+  color: rgba(244,237,224,0.4);
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+/* ===== ENTRANCE ANIMATIONS ===== */
+.fade-up {
+  opacity: 0;
+  transform: translateY(20px);
+  animation: fadeUp 0.9s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+.delay-1 { animation-delay: 0.15s; }
+.delay-2 { animation-delay: 0.3s; }
+.delay-3 { animation-delay: 0.45s; }
+.delay-4 { animation-delay: 0.6s; }
+@keyframes fadeUp {
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 900px) {
+  nav { padding: 1rem 1.5rem; flex-direction: column; align-items: flex-start; gap: 1rem; }
+  nav ul { gap: 1.2rem; flex-wrap: wrap; }
+  .hero { padding: 3.5rem 1.5rem 3rem; }
+  .marginalia { display: none; }
+  .philosophy { grid-template-columns: 1fr; gap: 2rem; padding: 4rem 1.5rem; }
+  .lab-index { padding: 4rem 1.5rem; }
+  .specimen-grid { grid-template-columns: 1fr; }
+  .specimen { padding: 2rem 0 !important; border-right: none !important; }
+  .specimen:nth-last-child(-n+2) { border-bottom: 1px solid var(--rule); }
+  .specimen:last-child { border-bottom: none; }
+  .notes { padding: 4rem 1.5rem; }
+  .notes-grid { grid-template-columns: 1fr; }
+  .builder { grid-template-columns: 1fr; padding: 4rem 1.5rem; gap: 2.5rem; }
+  .builder-portrait { aspect-ratio: 4 / 3; }
+  .builder-portrait::before { font-size: 8rem; }
+  .builder-stats { grid-template-columns: 1fr 1fr; gap: 1.5rem; }
+  .contact { padding: 4rem 1.5rem 2rem; }
+  .contact-grid { grid-template-columns: 1fr 1fr; gap: 2rem; }
+  h1.wordmark { font-size: 18vw; }
+}
+
+@media (max-width: 500px) {
+  .pillar { grid-template-columns: 1fr; gap: 0.5rem; }
+  .pillar-num { font-size: 2.2rem; }
+  .pillar h3 { font-size: 1.5rem; }
+  .contact-grid { grid-template-columns: 1fr; }
+  .index-header { flex-direction: column; align-items: flex-start; }
+  .index-count { text-align: left; }
+  .builder-stats { grid-template-columns: 1fr; }
+}
+
+</style>
+</head>
+<body>
+
+<!-- Top ticker -->
+<div class="ticker">
+  <div class="ticker-track">
+    <span><span class="dot dot-live"></span>Currently shipping: Toodle, kreatingpixels</span>
+    <span><span class="dot"></span>Building: My Reel Studio</span>
+    <span><span class="dot"></span>Open for AI consulting work</span>
+    <span><span class="dot"></span>Based in Mumbai</span>
+    <span><span class="dot"></span>Six products in flight</span>
+    <span><span class="dot dot-live"></span>Currently shipping: Toodle, kreatingpixels</span>
+    <span><span class="dot"></span>Building: My Reel Studio</span>
+    <span><span class="dot"></span>Open for AI consulting work</span>
+    <span><span class="dot"></span>Based in Mumbai</span>
+    <span><span class="dot"></span>Six products in flight</span>
+  </div>
+</div>
+
+<!-- Nav -->
+<nav>
+  <a href="#top" class="brand-mark">SmartBozo<em>/</em>Labs</a>
+  <ul>
+    <li><a href="#philosophy">Philosophy</a></li>
+    <li><a href="#index">Lab Index</a></li>
+    <li><a href="#notes">Notes</a></li>
+    <li><a href="#builder">Builder</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+</nav>
+
+<!-- Hero -->
+<section class="hero" id="top">
+  <div class="marginalia right">a one person operation, mostly</div>
+  <div class="marginalia r2">try things. ship some. learn from all.</div>
+
+  <div class="hero-meta fade-up">
+    <span>Est. 2024</span>
+    <span>Mumbai, India</span>
+    <span>Independent AI Lab</span>
+    <span>Vol. 02 / 2026</span>
+  </div>
+
+  <h1 class="wordmark fade-up delay-1">
+    <span class="smart">Smart</span><span class="bozo">Bozo</span> <span class="labs">Labs<span class="hero-cursor"></span></span>
+  </h1>
+
+  <p class="hero-tag fade-up delay-2">
+    Field notes from an independent lab building with AI, for business and consumers.
+  </p>
+
+  <p class="hero-intro fade-up delay-3">
+    <strong>SmartBozo Labs</strong> is a place to explore, experiment, and ship. We make small, useful software, sometimes for fun, sometimes for revenue, always to learn. Some products graduate into businesses. Others teach us what not to build next. Either way is fine by us.
+  </p>
+</section>
+
+<!-- Philosophy -->
+<section class="philosophy" id="philosophy">
+  <div>
+    <div class="section-label">§ 01 / Operating principles</div>
+    <h2 style="font-family:'Fraunces',serif;font-size:clamp(2rem, 4vw, 3.2rem);font-weight:400;line-height:1.05;letter-spacing:-0.03em;margin-top:1rem;font-variation-settings:'SOFT' 50;">How the lab <em style="color:var(--vermillion);font-weight:500;">works</em>.</h2>
+  </div>
+  <div class="philosophy-pillars">
+    <div class="pillar">
+      <div class="pillar-num">i.</div>
+      <div>
+        <h3>Explore openly.</h3>
+        <p>Most ideas die. That is fine. Curiosity is the cheapest form of research, and the best filter is shipping. We chase questions before answers and stay honest about what we do not yet know.</p>
+      </div>
+    </div>
+    <div class="pillar">
+      <div class="pillar-num">ii.</div>
+      <div>
+        <h3>Experiment fast.</h3>
+        <p>Build the smallest version. Put it in front of real people. Watch what happens. Every product here runs through a six axis validation playbook before code is written. Score below the line, the idea is killed early and cheaply.</p>
+      </div>
+    </div>
+    <div class="pillar">
+      <div class="pillar-num">iii.</div>
+      <div>
+        <h3>Build with intent.</h3>
+        <p>When something earns its way through validation, we build it properly. Design that respects the user, code that does not pretend to be magic, AI used as a tool and not as a costume.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Lab Index -->
+<section class="lab-index" id="index">
+  <div class="index-header">
+    <div>
+      <div class="section-label">§ 02 / Specimen catalogue</div>
+      <h2>Things we are <em>currently</em> working on.</h2>
+    </div>
+    <div class="index-count">
+      <strong>06</strong>
+      Products in flight
+    </div>
+  </div>
+
+  <div class="specimen-grid">
+
+    <!-- Toodle -->
+    <article class="specimen">
+      <div class="specimen-header">
+        <span class="specimen-num">No. 01</span>
+        <span class="stamp live">Live • Beta</span>
+      </div>
+      <h3>Toodle</h3>
+      <p class="tagline">Start doing. Joyfully.</p>
+      <p class="desc">A task manager for people who do not want a task manager. Three priority lanes, themes that do not look corporate, and a Done tab that actually feels good. 50+ beta testers. Android APK live, iOS coming.</p>
+      <div class="specimen-meta">
+        <span class="chip">Mobile</span>
+        <span class="chip">Productivity</span>
+        <span class="chip">Beta</span>
+      </div>
+      <a class="specimen-link" href="https://bit.ly/3ORdTms" target="_blank" rel="noopener">Get the APK →</a>
+    </article>
+
+    <!-- My Reel Studio -->
+    <article class="specimen">
+      <div class="specimen-header">
+        <span class="specimen-num">No. 02</span>
+        <span class="stamp building">Building</span>
+      </div>
+      <h3>My Reel Studio</h3>
+      <p class="tagline">AI video creation, end to end.</p>
+      <p class="desc">A SaaS for turning ideas into shareable video. Script, voice, image, motion, all in one studio. MVP reached. Phase 4 image and video pipeline shipped. Built on Anthropic, Veo, Kling and ElevenLabs.</p>
+      <div class="specimen-meta">
+        <span class="chip">SaaS</span>
+        <span class="chip">AI Video</span>
+        <span class="chip">Web</span>
+      </div>
+      <a class="specimen-link" href="https://myreel.studio" target="_blank" rel="noopener">myreel.studio →</a>
+    </article>
+
+    <!-- ProtoReview -->
+    <article class="specimen">
+      <div class="specimen-header">
+        <span class="specimen-num">No. 03</span>
+        <span class="stamp planned">Planned</span>
+      </div>
+      <h3>ProtoReview</h3>
+      <p class="tagline">Pin comments to prototypes.</p>
+      <p class="desc">A clean way to review HTML prototypes with comment pins, version history, and AI generated change summaries. Built for product teams who keep losing review feedback in Slack threads.</p>
+      <div class="specimen-meta">
+        <span class="chip">Tool</span>
+        <span class="chip">B2B</span>
+        <span class="chip">AI</span>
+      </div>
+      <span class="specimen-link disabled">Coming soon</span>
+    </article>
+
+    <!-- Scrib -->
+    <article class="specimen">
+      <div class="specimen-header">
+        <span class="specimen-num">No. 04</span>
+        <span class="stamp concept">Concept</span>
+      </div>
+      <h3>Scrib</h3>
+      <p class="tagline">Capture once. Find forever.</p>
+      <p class="desc">A knowledge capture tool for the things you read, hear, and see. Save text, screenshots, voice notes. Search them like one big personal archive. Currently sketched, not yet shipped.</p>
+      <div class="specimen-meta">
+        <span class="chip">Knowledge</span>
+        <span class="chip">OCR</span>
+        <span class="chip">Concept</span>
+      </div>
+      <span class="specimen-link disabled">In design</span>
+    </article>
+
+    <!-- MumbaiFixit -->
+    <article class="specimen">
+      <div class="specimen-header">
+        <span class="specimen-num">No. 05</span>
+        <span class="stamp exploring">Exploring</span>
+      </div>
+      <h3>MumbaiFixit</h3>
+      <p class="tagline">Civic accountability, made legible.</p>
+      <p class="desc">A transparency tool that maps BMC contractors, tenders, and decisions. Pulls Mahatenders, Standing Committee minutes, and MCA director graphs into one searchable surface for citizens and journalists.</p>
+      <div class="specimen-meta">
+        <span class="chip">Civic Tech</span>
+        <span class="chip">Open Data</span>
+        <span class="chip">Mumbai</span>
+      </div>
+      <span class="specimen-link disabled">Research stage</span>
+    </article>
+
+    <!-- kreatingpixels -->
+    <article class="specimen">
+      <div class="specimen-header">
+        <span class="specimen-num">No. 06</span>
+        <span class="stamp live">Live</span>
+      </div>
+      <h3>@kreatingpixels</h3>
+      <p class="tagline">Cinematic AI, Kerala coded.</p>
+      <p class="desc">An Instagram studio for short, painterly AI animations. A blend of Kerala light and Ghibli soul. Tries to find the underserved middle between hyperreal and cartoon.</p>
+      <div class="specimen-meta">
+        <span class="chip">Instagram</span>
+        <span class="chip">AI Art</span>
+        <span class="chip">Cinematic</span>
+      </div>
+      <a class="specimen-link" href="https://instagram.com/kreatingpixels" target="_blank" rel="noopener">Follow on Instagram →</a>
+    </article>
+
+  </div>
+</section>
+
+<!-- Notes -->
+<section class="notes" id="notes">
+  <div class="notes-header">
+    <div class="section-label">§ 03 / Lab notes</div>
+    <h2>Writing about <em>building</em>, business and AI.</h2>
+  </div>
+  <div class="notes-grid">
+    <a class="note-card" href="https://substack.com" target="_blank" rel="noopener">
+      <div class="platform">Substack</div>
+      <h4>Business Beyond Obvious</h4>
+      <p>Long form essays on operating, strategy, and what actually changes when AI shows up at work.</p>
+      <div class="arrow">READ →</div>
+    </a>
+    <a class="note-card" href="https://medium.com" target="_blank" rel="noopener">
+      <div class="platform">Medium</div>
+      <h4>Builder Diaries</h4>
+      <p>Notes from inside the lab. What we are building, what broke, and what we learned this week.</p>
+      <div class="arrow">READ →</div>
+    </a>
+    <a class="note-card" href="https://linkedin.com" target="_blank" rel="noopener">
+      <div class="platform">LinkedIn</div>
+      <h4>Short Posts, Sharp Takes</h4>
+      <p>Daily small thoughts on AI, product, and the strange new shape of independent work.</p>
+      <div class="arrow">READ →</div>
+    </a>
+  </div>
+</section>
+
+<!-- Builder -->
+<section class="builder" id="builder">
+  <div class="builder-portrait">
+    <div class="portrait-tag">
+      <span>OJ / Founder</span>
+      <span>Plate 01</span>
+    </div>
+  </div>
+  <div class="builder-content">
+    <div class="section-label">§ 04 / The builder</div>
+    <h2 style="margin-top:1rem;">Hi, I am <em>Omprakash Jha</em>.</h2>
+    <p>I run SmartBozo Labs alone, mostly. Before this, I spent five years at <strong>Rebel Foods</strong>, ending as Chief of Staff, where I led work across Strategic Initiatives, Customer Experience, and India / MENA / UK businesses.</p>
+    <p>Today I split my time between <strong>consulting</strong> for companies on AI and operations, and <strong>building</strong> small products under this lab. Some are tools I wished existed. Others are bets on where things are going. All of them are excuses to keep my hands in the work.</p>
+    <p>If you are exploring an AI initiative, building a product, or just want to talk shop, I would love to hear from you.</p>
+    <div class="builder-stats">
+      <div class="stat">
+        <div class="num">5+</div>
+        <div class="label">Years at Rebel</div>
+      </div>
+      <div class="stat">
+        <div class="num">06</div>
+        <div class="label">Active products</div>
+      </div>
+      <div class="stat">
+        <div class="num">2</div>
+        <div class="label">Live consulting clients</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Contact -->
+<section class="contact" id="contact">
+  <div class="contact-inner">
+    <div class="section-label" style="color:#f4a83a;">§ 05 / Get in touch</div>
+    <h2 style="margin-top:1rem;">Let us <em>build</em> something.</h2>
+    <p class="contact-tag">Consulting briefs, product collaborations, lab visits, hello notes. All welcome.</p>
+
+    <div class="cta-row">
+      <a class="btn primary" href="mailto:opjha.builds@gmail.com">Email the lab →</a>
+      <a class="btn" href="https://wa.me/917977047646" target="_blank" rel="noopener">WhatsApp us</a>
+    </div>
+
+    <div class="contact-grid" style="margin-top:4rem;">
+      <div class="contact-block">
+        <div class="label">Email</div>
+        <a href="mailto:opjha.builds@gmail.com">opjha.builds@gmail.com</a>
+      </div>
+      <div class="contact-block">
+        <div class="label">WhatsApp</div>
+        <a href="https://wa.me/917977047646">+91 79770 47646</a>
+      </div>
+      <div class="contact-block">
+        <div class="label">Studio</div>
+        <span class="value">Mumbai, India</span>
+      </div>
+      <div class="contact-block">
+        <div class="label">Hours</div>
+        <span class="value">Mon to Fri, IST</span>
+      </div>
+    </div>
+
+    <footer class="colophon">
+      <div>© 2026 SmartBozo Labs. Built with care, in Mumbai.</div>
+      <div>Vol. 02 / Issue 04 / Independent AI Lab</div>
+    </footer>
+  </div>
+</section>
+
+<script>
+// Smooth scroll for nav links
+document.querySelectorAll('nav a[href^="#"]').forEach(link => {
+  link.addEventListener('click', e => {
+    e.preventDefault();
+    const target = document.querySelector(link.getAttribute('href'));
+    if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  });
+});
+
+// Reveal on scroll for specimens
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.style.opacity = '1';
+      entry.target.style.transform = 'translateY(0)';
+    }
+  });
+}, { threshold: 0.1 });
+
+document.querySelectorAll('.specimen, .pillar, .note-card').forEach(el => {
+  el.style.opacity = '0';
+  el.style.transform = 'translateY(20px)';
+  el.style.transition = 'opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1), transform 0.7s cubic-bezier(0.16, 1, 0.3, 1)';
+  observer.observe(el);
+});
+</script>
+</body>
+</html>
