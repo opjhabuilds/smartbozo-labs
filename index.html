@@ -523,20 +523,12 @@ h1.wordmark .labs::after {
   background: var(--paper-deep);
   overflow: hidden;
 }
-.builder-portrait::before {
-  content: 'OJ';
-  position: absolute;
-  inset: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-family: 'Fraunces', serif;
-  font-style: italic;
-  font-size: 12rem;
-  font-weight: 300;
-  color: var(--ink);
-  font-variation-settings: "SOFT" 100;
-  opacity: 0.92;
+.builder-portrait img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: top center;
 }
 .builder-portrait::after {
   content: '';
@@ -745,7 +737,6 @@ footer.colophon {
   .notes-grid { grid-template-columns: 1fr; }
   .builder { grid-template-columns: 1fr; padding: 4rem 1.5rem; gap: 2.5rem; }
   .builder-portrait { aspect-ratio: 4 / 3; }
-  .builder-portrait::before { font-size: 8rem; }
   .builder-stats { grid-template-columns: 1fr 1fr; gap: 1.5rem; }
   .contact { padding: 4rem 1.5rem 2rem; }
   .contact-grid { grid-template-columns: 1fr 1fr; gap: 2rem; }
@@ -769,16 +760,16 @@ footer.colophon {
 <!-- Top ticker -->
 <div class="ticker">
   <div class="ticker-track">
-    <span><span class="dot dot-live"></span>Currently shipping: Toodle, Scrib, kreatingpixels</span>
+    <span><span class="dot dot-live"></span>Currently shipping: Toodle, Scrib, DesignPin, kreatingpixels</span>
     <span><span class="dot"></span>Building: Ishaara</span>
     <span><span class="dot"></span>Open for AI consulting work</span>
     <span><span class="dot"></span>Based in Mumbai</span>
-    <span><span class="dot"></span>Six products in flight</span>
-    <span><span class="dot dot-live"></span>Currently shipping: Toodle, Scrib, kreatingpixels</span>
+    <span><span class="dot"></span>Eight products in flight</span>
+    <span><span class="dot dot-live"></span>Currently shipping: Toodle, Scrib, DesignPin, kreatingpixels</span>
     <span><span class="dot"></span>Building: Ishaara</span>
     <span><span class="dot"></span>Open for AI consulting work</span>
     <span><span class="dot"></span>Based in Mumbai</span>
-    <span><span class="dot"></span>Six products in flight</span>
+    <span><span class="dot"></span>Eight products in flight</span>
   </div>
 </div>
 
@@ -858,7 +849,7 @@ footer.colophon {
       <h2>Things we are <em>currently</em> working on.</h2>
     </div>
     <div class="index-count">
-      <strong>06</strong>
+      <strong>08</strong>
       Products in flight
     </div>
   </div>
@@ -886,7 +877,7 @@ footer.colophon {
     <article class="specimen">
       <div class="specimen-header">
         <span class="specimen-num">No. 02</span>
-        <span class="stamp planned">Planned</span>
+        <span class="stamp live">Live</span>
       </div>
       <h3>DesignPin</h3>
       <p class="tagline">Pin comments to prototypes.</p>
@@ -895,8 +886,9 @@ footer.colophon {
         <span class="chip">Tool</span>
         <span class="chip">B2B</span>
         <span class="chip">AI</span>
+        <span class="chip">Live</span>
       </div>
-      <span class="specimen-link disabled">Coming soon</span>
+      <a class="specimen-link" href="https://designpin.pro" target="_blank" rel="noopener">designpin.pro →</a>
     </article>
 
     <!-- Scrib -->
@@ -933,10 +925,44 @@ footer.colophon {
       <span class="specimen-link disabled">In build</span>
     </article>
 
-    <!-- MumbaiFixit -->
+    <!-- AdLoop -->
     <article class="specimen">
       <div class="specimen-header">
         <span class="specimen-num">No. 05</span>
+        <span class="stamp planned">Planned</span>
+      </div>
+      <h3>AdLoop</h3>
+      <p class="tagline">Ads that run themselves.</p>
+      <p class="desc">A tool that automates social media advertising end to end: creative, targeting, budgets, iteration. Built so small teams can run ads like a full growth desk.</p>
+      <div class="specimen-meta">
+        <span class="chip">SaaS</span>
+        <span class="chip">AdTech</span>
+        <span class="chip">Automation</span>
+      </div>
+      <span class="specimen-link disabled">In design</span>
+    </article>
+
+    <!-- AI for Breakfast -->
+    <article class="specimen">
+      <div class="specimen-header">
+        <span class="specimen-num">No. 06</span>
+        <span class="stamp planned">Planned</span>
+      </div>
+      <h3>AI for Breakfast</h3>
+      <p class="tagline">AI, served fresh.</p>
+      <p class="desc">An initiative to teach what I learn while building AI and with AI. Short, practical lessons for operators and builders, not researchers.</p>
+      <div class="specimen-meta">
+        <span class="chip">Education</span>
+        <span class="chip">Content</span>
+        <span class="chip">Community</span>
+      </div>
+      <span class="specimen-link disabled">Brewing</span>
+    </article>
+
+    <!-- MumbaiFixit -->
+    <article class="specimen">
+      <div class="specimen-header">
+        <span class="specimen-num">No. 07</span>
         <span class="stamp exploring">Exploring</span>
       </div>
       <h3>MumbaiFixit</h3>
@@ -953,7 +979,7 @@ footer.colophon {
     <!-- kreatingpixels -->
     <article class="specimen">
       <div class="specimen-header">
-        <span class="specimen-num">No. 06</span>
+        <span class="specimen-num">No. 08</span>
         <span class="stamp live">Live</span>
       </div>
       <h3>@kreatingpixels</h3>
@@ -1001,6 +1027,7 @@ footer.colophon {
 <!-- Builder -->
 <section class="builder" id="builder">
   <div class="builder-portrait">
+    <img src="assets/om-sketch.jpg" alt="Engraved portrait of Omprakash Jha">
     <div class="portrait-tag">
       <span>OJ / Founder</span>
       <span>Plate 01</span>
@@ -1018,7 +1045,7 @@ footer.colophon {
         <div class="label">Years across industries</div>
       </div>
       <div class="stat">
-        <div class="num">06</div>
+        <div class="num">08</div>
         <div class="label">Active products</div>
       </div>
       <div class="stat">
