@@ -736,7 +736,7 @@ footer.colophon {
   .notes { padding: 4rem 1.5rem; }
   .notes-grid { grid-template-columns: 1fr; }
   .builder { grid-template-columns: 1fr; padding: 4rem 1.5rem; gap: 2.5rem; }
-  .builder-portrait { aspect-ratio: 4 / 3; }
+  .builder-portrait { aspect-ratio: 3 / 4; max-width: 340px; }
   .builder-stats { grid-template-columns: 1fr 1fr; gap: 1.5rem; }
   .contact { padding: 4rem 1.5rem 2rem; }
   .contact-grid { grid-template-columns: 1fr 1fr; gap: 2rem; }
@@ -744,13 +744,75 @@ footer.colophon {
 }
 
 @media (max-width: 500px) {
-  .pillar { grid-template-columns: 1fr; gap: 0.5rem; }
+  /* Nav: 3 + 2 balanced wrap, no orphan link */
+  nav { padding: 1rem 1.25rem; gap: 0.9rem; }
+  nav ul {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0.7rem 0.5rem;
+    width: 100%;
+    font-size: 0.7rem;
+    letter-spacing: 0.08em;
+  }
+
+  /* Hero */
+  .hero { padding: 2.75rem 1.25rem 2.5rem; }
+  h1.wordmark { font-size: 16vw; margin-bottom: 1rem; }
+  .hero-meta {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.55rem 0.75rem;
+    font-size: 0.62rem;
+    letter-spacing: 0.1em;
+    margin-bottom: 1.75rem;
+  }
+  .hero-meta span::before { margin-right: 0.35rem; }
+  .hero-tag { font-size: 1.25rem; margin-top: 1.5rem; margin-bottom: 2rem; }
+  .hero-intro { font-size: 1.05rem; }
+
+  /* Philosophy */
+  .philosophy { padding: 3rem 1.25rem; gap: 1.75rem; }
+  .philosophy-pillars { gap: 2rem; }
+  .pillar { grid-template-columns: 1fr; gap: 0.5rem; padding-top: 1.5rem; }
   .pillar-num { font-size: 2.2rem; }
   .pillar h3 { font-size: 1.5rem; }
-  .contact-grid { grid-template-columns: 1fr; }
-  .index-header { flex-direction: column; align-items: flex-start; }
+
+  /* Lab index */
+  .lab-index { padding: 3rem 1.25rem; }
+  .index-header { flex-direction: column; align-items: flex-start; gap: 1.25rem; margin-bottom: 2.25rem; }
   .index-count { text-align: left; }
-  .builder-stats { grid-template-columns: 1fr; }
+  .index-count strong { font-size: 2rem; }
+  .specimen { padding: 1.75rem 0 !important; }
+  .specimen h3 { font-size: 1.9rem; }
+  .specimen p.desc { margin-bottom: 1.2rem; }
+
+  /* Notes */
+  .notes { padding: 3rem 1.25rem; }
+  .notes-header { margin-bottom: 2rem; }
+  .notes-grid { gap: 1.25rem; }
+  .note-card { padding: 1.5rem; }
+  .note-card h4 { font-size: 1.4rem; }
+
+  /* Builder */
+  .builder { padding: 3rem 1.25rem; gap: 2rem; }
+  .builder-content p { font-size: 1.05rem; }
+  .builder-stats { grid-template-columns: 1fr; gap: 1.25rem; margin-top: 2rem; padding-top: 2rem; }
+  .stat .num { font-size: 2.8rem; }
+
+  /* Contact */
+  .contact { padding: 3rem 1.25rem 2rem; }
+  .contact-tag { font-size: 1.15rem; margin-bottom: 2.25rem; }
+  .cta-row { flex-direction: column; gap: 0.75rem; margin-top: 1.75rem; }
+  .btn { width: 100%; justify-content: center; padding: 0.9rem 1.2rem; }
+  .contact-grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem 1rem;
+    padding-top: 2rem;
+    margin-top: 2.25rem !important;
+  }
+  .contact-block .label { margin-bottom: 0.5rem; }
+  .contact-block a, .contact-block .value { font-size: 0.9rem; overflow-wrap: break-word; }
+  footer.colophon { margin-top: 2.5rem; padding-top: 1.5rem; gap: 0.5rem; }
 }
 
 </style>

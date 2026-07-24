@@ -52,3 +52,4 @@ The inline `<script>` only does two things: smooth-scroll for in-page nav links,
 - Canonical contact details: WhatsApp `+91 79770 47646`, email `hello@smartbozo.com`. Never change these values unless explicitly asked to.
 - Never use em dashes ( — ) anywhere in site content. Use a period, comma, or parentheses instead.
 - The product count appears in three places and must always stay in sync when products are added or removed: the `.index-count strong` in the Lab Index, the "products in flight" line in the ticker (both duplicated copies), and the "Active products" stat in the Builder section.
+- Every layout or visual change must be checked at mobile widths (360px, 390px, 430px) before committing. The site gets significant phone traffic. Check for horizontal overflow, awkward wrapping, orphaned items, and oversized padding, and put mobile-only fixes inside the existing `@media (max-width: 900px)` / `@media (max-width: 500px)` blocks so desktop is unaffected.
