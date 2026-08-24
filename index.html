@@ -391,6 +391,8 @@ h1.wordmark .labs::after {
 .stamp.planned { color: var(--indigo); }
 .stamp.concept { color: var(--ochre); }
 .stamp.exploring { color: var(--ink-soft); }
+.stamp.ongoing { color: var(--ochre); }
+.stamp.sunset { color: var(--ink-fade); opacity: 0.85; }
 
 .specimen h3 {
   font-family: 'Fraunces', serif;
@@ -446,6 +448,48 @@ h1.wordmark .labs::after {
 }
 .specimen-link:hover { color: var(--vermillion); border-color: var(--vermillion); gap: 0.8rem; }
 .specimen-link.disabled { color: var(--ink-fade); border-color: transparent; cursor: not-allowed; }
+.specimen-links {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.75rem 1.5rem;
+}
+
+/* Status filter */
+.index-filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 2.5rem;
+}
+.filter-pill {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.68rem;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  line-height: 1;
+  padding: 0.45rem 0.85rem;
+  background: transparent;
+  border: 1px solid var(--rule);
+  border-radius: 2px;
+  color: var(--ink-soft);
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s, border-color 0.2s;
+}
+.filter-pill:hover { border-color: var(--ink); color: var(--ink); }
+.filter-pill.is-active {
+  background: var(--vermillion);
+  border-color: var(--vermillion);
+  color: var(--paper);
+}
+.filter-pill.is-active:hover { background: var(--vermillion-deep); border-color: var(--vermillion-deep); color: var(--paper); }
+
+/* Filter-aware grid geometry (JS assigns these on the visible cards) */
+.specimen.is-filtered-out { display: none; }
+.specimen.is-left { padding-right: 2.5rem; padding-left: 0; border-right: 1px solid var(--rule); }
+.specimen.is-right { padding-right: 0; padding-left: 2.5rem; border-right: none; }
+.specimen.is-last-two { border-bottom: none; }
 
 /* ===== NOTES (Writing) ===== */
 .notes {
@@ -735,6 +779,9 @@ footer.colophon {
   .specimen { padding: 2rem 0 !important; border-right: none !important; }
   .specimen:nth-last-child(-n+2) { border-bottom: 1px solid var(--rule); }
   .specimen:last-child { border-bottom: none; }
+  .specimen.is-last-two { border-bottom: 1px solid var(--rule); }
+  .specimen.is-last { border-bottom: none; }
+  .index-filters { margin-bottom: 2rem; }
   .notes { padding: 4rem 1.5rem; }
   .notes-grid { grid-template-columns: 1fr; }
   .builder { grid-template-columns: 1fr; padding: 4rem 1.5rem; gap: 2.5rem; }
@@ -784,6 +831,9 @@ footer.colophon {
   .index-header { flex-direction: column; align-items: flex-start; gap: 1.25rem; margin-bottom: 2.25rem; }
   .index-count { text-align: left; }
   .index-count strong { font-size: 2rem; }
+  .index-filters { gap: 0.4rem; margin-bottom: 1.75rem; }
+  .filter-pill { font-size: 0.62rem; letter-spacing: 0.1em; padding: 0.4rem 0.7rem; }
+  .specimen-links { gap: 0.6rem 1.1rem; }
   .specimen { padding: 1.75rem 0 !important; }
   .specimen h3 { font-size: 1.9rem; }
   .specimen p.desc { margin-bottom: 1.2rem; }
@@ -824,18 +874,18 @@ footer.colophon {
 <!-- Top ticker -->
 <div class="ticker">
   <div class="ticker-track">
-    <span><span class="dot dot-live"></span>Currently shipping: Scrib, Toodle, DesignPin</span>
+    <span><span class="dot dot-live"></span>Currently shipping: Scrib, Toodle, DesignPin, AI for Breakfast</span>
     <span><span class="dot"></span>Building: Ishaara</span>
     <span><span class="dot"></span>Open for AI consulting work</span>
     <span><span class="dot"></span>Based in Mumbai</span>
     <span><span class="dot"></span>Small team, big swings</span>
-    <span><span class="dot"></span>Eight products in flight</span>
-    <span><span class="dot dot-live"></span>Currently shipping: Scrib, Toodle, DesignPin</span>
+    <span><span class="dot"></span>Nine products in flight</span>
+    <span><span class="dot dot-live"></span>Currently shipping: Scrib, Toodle, DesignPin, AI for Breakfast</span>
     <span><span class="dot"></span>Building: Ishaara</span>
     <span><span class="dot"></span>Open for AI consulting work</span>
     <span><span class="dot"></span>Based in Mumbai</span>
     <span><span class="dot"></span>Small team, big swings</span>
-    <span><span class="dot"></span>Eight products in flight</span>
+    <span><span class="dot"></span>Nine products in flight</span>
   </div>
 </div>
 
@@ -912,12 +962,22 @@ footer.colophon {
   <div class="index-header">
     <div>
       <div class="section-label">§ 02 / Specimen catalogue</div>
-      <h2>Things we are <em>currently</em> working on.</h2>
+      <h2>Things we are working on, and one we <em>retired</em>.</h2>
     </div>
     <div class="index-count">
-      <strong>08</strong>
+      <strong>09</strong>
       Products in flight
     </div>
+  </div>
+
+  <div class="index-filters" role="group" aria-label="Filter products by status">
+    <button type="button" class="filter-pill is-active" data-filter="all" aria-pressed="true">All</button>
+    <button type="button" class="filter-pill" data-filter="live" aria-pressed="false">Live</button>
+    <button type="button" class="filter-pill" data-filter="ongoing" aria-pressed="false">Ongoing</button>
+    <button type="button" class="filter-pill" data-filter="building" aria-pressed="false">Building</button>
+    <button type="button" class="filter-pill" data-filter="planned" aria-pressed="false">Planned</button>
+    <button type="button" class="filter-pill" data-filter="exploring" aria-pressed="false">Exploring</button>
+    <button type="button" class="filter-pill" data-filter="sunset" aria-pressed="false">Sunset</button>
   </div>
 
   <div class="specimen-grid">
@@ -953,7 +1013,10 @@ footer.colophon {
         <span class="chip">Productivity</span>
         <span class="chip">Beta</span>
       </div>
-      <a class="specimen-link" href="https://bit.ly/3ORdTms" target="_blank" rel="noopener">Get the APK →</a>
+      <div class="specimen-links">
+        <a class="specimen-link" href="https://toodle.life" target="_blank" rel="noopener">toodle.life →</a>
+        <a class="specimen-link" href="https://bit.ly/3ORdTms" target="_blank" rel="noopener">Get the APK →</a>
+      </div>
     </article>
 
     <!-- DesignPin -->
@@ -1012,7 +1075,7 @@ footer.colophon {
     <article class="specimen">
       <div class="specimen-header">
         <span class="specimen-num">No. 06</span>
-        <span class="stamp planned">Planned</span>
+        <span class="stamp ongoing">Ongoing</span>
       </div>
       <h3>AI for Breakfast</h3>
       <p class="tagline">AI, served fresh.</p>
@@ -1022,7 +1085,7 @@ footer.colophon {
         <span class="chip">Content</span>
         <span class="chip">Community</span>
       </div>
-      <span class="specimen-link disabled">Brewing</span>
+      <a class="specimen-link" href="https://www.aiforbreakfast.app" target="_blank" rel="noopener">aiforbreakfast.app →</a>
     </article>
 
     <!-- MumbaiFixit -->
@@ -1057,6 +1120,40 @@ footer.colophon {
         <span class="chip">AI</span>
       </div>
       <span class="specimen-link disabled">Surveying</span>
+    </article>
+
+    <!-- Open OS -->
+    <article class="specimen">
+      <div class="specimen-header">
+        <span class="specimen-num">No. 09</span>
+        <span class="stamp exploring">Exploring</span>
+      </div>
+      <h3>Open OS</h3>
+      <p class="tagline">One login, every tool.</p>
+      <p class="desc">A hosted home for AI tools that kill repetitive weekly work for small businesses. One login, all your tools in one place, built tab by tab. Scrib and DesignPin are the first residents; the next tools come from grinds real teams surface. Free to start, paid once proven.</p>
+      <div class="specimen-meta">
+        <span class="chip">Platform</span>
+        <span class="chip">SaaS</span>
+        <span class="chip">Small Business</span>
+      </div>
+      <span class="specimen-link disabled">Opening soon</span>
+    </article>
+
+    <!-- My Reel Studio -->
+    <article class="specimen">
+      <div class="specimen-header">
+        <span class="specimen-num">No. 10</span>
+        <span class="stamp sunset">Sunset</span>
+      </div>
+      <h3>My Reel Studio</h3>
+      <p class="tagline">AI video creation, end to end.</p>
+      <p class="desc">A full AI video studio: script, voice, image and motion in one flow. Reached MVP, then was retired for scope-creeping without distribution discipline. The lab's most useful failure; its lessons shaped everything built since.</p>
+      <div class="specimen-meta">
+        <span class="chip">SaaS</span>
+        <span class="chip">AI Video</span>
+        <span class="chip">Web</span>
+      </div>
+      <span class="specimen-link disabled">Retired 2026</span>
     </article>
 
   </div>
@@ -1111,7 +1208,7 @@ footer.colophon {
         <div class="label">Years across industries</div>
       </div>
       <div class="stat">
-        <div class="num">08</div>
+        <div class="num">09</div>
         <div class="label">Active products</div>
       </div>
       <div class="stat">
@@ -1171,12 +1268,14 @@ document.querySelectorAll('nav a[href^="#"]').forEach(link => {
 });
 
 // Reveal on scroll for specimens
+function reveal(el) {
+  el.style.opacity = '1';
+  el.style.transform = 'translateY(0)';
+}
+
 const observer = new IntersectionObserver((entries) => {
   entries.forEach(entry => {
-    if (entry.isIntersecting) {
-      entry.target.style.opacity = '1';
-      entry.target.style.transform = 'translateY(0)';
-    }
+    if (entry.isIntersecting) reveal(entry.target);
   });
 }, { threshold: 0.1 });
 
@@ -1186,6 +1285,49 @@ document.querySelectorAll('.specimen, .pillar, .note-card').forEach(el => {
   el.style.transition = 'opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1), transform 0.7s cubic-bezier(0.16, 1, 0.3, 1)';
   observer.observe(el);
 });
+
+// Lab Index status filter
+const filterBar = document.querySelector('.index-filters');
+if (filterBar) {
+  const pills = Array.from(filterBar.querySelectorAll('.filter-pill'));
+  const specimens = Array.from(document.querySelectorAll('.specimen-grid .specimen'));
+
+  // Cards keep their permanent numbers, so column/edge geometry is recomputed
+  // from the visible set instead of relying on nth-child position.
+  function layout() {
+    specimens.forEach(el => el.classList.remove('is-left', 'is-right', 'is-last-two', 'is-last'));
+    const visible = specimens.filter(el => !el.classList.contains('is-filtered-out'));
+    visible.forEach((el, i) => {
+      el.classList.add(i % 2 === 0 ? 'is-left' : 'is-right');
+      if (i >= visible.length - 2) el.classList.add('is-last-two');
+      if (i === visible.length - 1) el.classList.add('is-last');
+    });
+  }
+
+  function applyFilter(status) {
+    specimens.forEach(el => {
+      const stamp = el.querySelector('.stamp');
+      const match = status === 'all' || (stamp && stamp.classList.contains(status));
+      el.classList.toggle('is-filtered-out', !match);
+      // Cards revealed by a filter must skip the scroll-reveal fade,
+      // otherwise a never-observed card stays stuck at opacity 0.
+      if (match) reveal(el);
+    });
+    layout();
+  }
+
+  pills.forEach(pill => {
+    pill.addEventListener('click', () => {
+      pills.forEach(p => {
+        p.classList.toggle('is-active', p === pill);
+        p.setAttribute('aria-pressed', p === pill ? 'true' : 'false');
+      });
+      applyFilter(pill.dataset.filter);
+    });
+  });
+
+  layout();
+}
 </script>
 </body>
 </html>
