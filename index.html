@@ -844,7 +844,8 @@ footer.colophon {
   .index-header { flex-direction: column; align-items: flex-start; gap: 1.25rem; margin-bottom: 2.25rem; }
   .index-count { text-align: left; }
   .index-count strong { font-size: 2rem; }
-  .index-filters { gap: 0.4rem; margin-bottom: 1.75rem; }
+  /* 3 + 2 balanced wrap, no orphan pill (same pattern as the nav) */
+  .index-filters { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.4rem; margin-bottom: 1.75rem; }
   .filter-pill { font-size: 0.62rem; letter-spacing: 0.1em; padding: 0.4rem 0.7rem; }
   .specimen-links { gap: 0.6rem 1.1rem; }
   .specimen { padding: 1.75rem 0 !important; }
@@ -987,7 +988,6 @@ footer.colophon {
     <button type="button" class="filter-pill is-active" data-filter="all" aria-pressed="true">All</button>
     <button type="button" class="filter-pill" data-filter="live" aria-pressed="false">Live</button>
     <button type="button" class="filter-pill" data-filter="building" aria-pressed="false">Building</button>
-    <button type="button" class="filter-pill" data-filter="planned" aria-pressed="false">Planned</button>
     <button type="button" class="filter-pill" data-filter="exploring" aria-pressed="false">Exploring</button>
     <button type="button" class="filter-pill" data-filter="sunset" aria-pressed="false">Sunset</button>
   </div>
@@ -1071,7 +1071,7 @@ footer.colophon {
     <article class="specimen">
       <div class="specimen-header">
         <span class="specimen-num">No. 05</span>
-        <span class="stamp planned">Planned</span>
+        <span class="stamp exploring">Exploring</span>
       </div>
       <h3>AdLoop</h3>
       <p class="tagline">Ads that run themselves.</p>
